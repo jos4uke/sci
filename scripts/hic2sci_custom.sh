@@ -3,7 +3,7 @@
 # custom script to use with own chromosome names 
 # chromosome names are provided using first column in chrom.sizes file (`cut -f1,2 genome.fasta.fai >genome.chrom.sizes`)
 infile=$1
-chrom.names=($(cut -f1 $2))
+chrom_names=($(cut -f1 $2))
 outfile=$3
 res=$4
 
@@ -20,10 +20,10 @@ res=$4
 #dump <observed/oe> <NONE/VC/VC_SQRT/KR> <hicFile(s)> <chr1>[:x1:x2] <chr2>[:y1:y2] <BP/FRAG> <binsize> [outfile]
 
 # custom
-for ((i=0;i<${#chrom.names[@]};i++)); do
-	for ((j=$((i));j<${#chrom.names[@]};j++)); do
-		c1=${chrom.names[$i]}
-                c2=${chrom.names[$j]}
+for ((i=0;i<${#chrom_names[@]};i++)); do
+	for ((j=$((i));j<${#chrom_names[@]};j++)); do
+		c1=${chrom_names[$i]}
+                c2=${chrom_names[$j]}
                 java -jar ${JUICERTOOLS} dump observed NONE ${infile} ${c1} ${c2}  BP ${res} | awk -v c1=${c1} -v c2=${c2} -v res=${res} '{OFS="\t"}{print c1,$1,$1+res,c2,$2,$2+res,$3}' >> ${outfile};
         done
 done
