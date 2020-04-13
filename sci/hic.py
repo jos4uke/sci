@@ -21,19 +21,20 @@ class HicData:
         self.ordered_pairs = []
         self.embedding_mode = None
         self.interchrom_contact_matrix = []
+        self.chr_names = []
 
     def get_chromosomes_bin_counts(self, chrsize_file):
         oF = open(chrsize_file)
         for line in oF.readlines():
             parts = line.strip().split()
             self.dChrBins[parts[0]] = int(parts[1])/self.res + 1
+            self.chr_names.append(parts[0])
         return
 
     def initialize(self, chr_size_file):
         self.get_chromosomes_bin_counts(chr_size_file)
         # generate genomewide mapping
-        for i in range(1, 23):
-            chrom = "chr%d" % i
+        for chrom in self.chr_names:
             for j in range(self.dChrBins[chrom]):
                 self.GW_meta_data.append((chrom, j*self.res,
                                           j*self.res+self.res))
@@ -128,12 +129,10 @@ class HicData:
 
     def write_GW_matrix(self, mat_file, cis=False):
         rows = []
-        for i in range(1, 23):
-                chrom1 = "chr%d" % i
+        for chrom1 in self.chr_names:
                 cols = []
-                for j in range(1, 23):
-                        chrom2 = "chr%d" % j
-                        if (i == j):
+                for chrom2 in self.chr_names:
+                        if (chrom1 == chrom2):
                                 if cis:
                                         cols.append(self.contact_matrices
                                                     [(chrom1, chrom1)])
