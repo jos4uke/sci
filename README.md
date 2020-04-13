@@ -80,7 +80,14 @@ $ cd export JUICERTOOLS=/path/to/juicer-tools
 Then, run hic2sci script to get SCI formatted input data:
 
 ```sh
+# original: chromosome names are in chrN format with N=1..22 by default
 $ scripts/hic2sci.sh <input .hic file> <output file> <resolution> 
+
+# custom: if use own chromosome names which does not conform to previous chromosome naming
+# please provide chrom.sizes input file
+# cut -f1,2 genome.fasta.fai > genome.chrom.sizes
+$ scripts/hic2sci.sh <input .hic file> <chrom.sizes> <output file> <resolution>
+
 ```
 
 
