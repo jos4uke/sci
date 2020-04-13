@@ -107,8 +107,10 @@ class HicData:
                                      desc="writing HiC graph"):
             if chrom1 != chrom2:
                 if self.embedding_mode == "oe":
-                    c1 = self.chr_names.index(chrom1)
-                    c2 = self.chr_names.index(chrom2)
+                    # index + 1 corresponds to chromosome number: 0 + 1 <=> chr_name_1 
+                    # mandatory to exclude any chromosome 0
+                    c1 = self.chr_names.index(chrom1) + 1
+                    c2 = self.chr_names.index(chrom2) + 1
 
                     if c1 % 2 == 1 and c2 % 2 == 0:
                         self.dump_interchrom_block(oF, chrom1, chrom2)
